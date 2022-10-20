@@ -55,3 +55,10 @@ cover/
 .env
 .venv
 env/
+
+# Img
+.png
+.jpg
+.jpeg
+
+asset/
