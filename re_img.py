@@ -1,5 +1,7 @@
 import os
 import sys
+from random import randint
+from PIL import Image, ImageOps
 
 if len(sys.argv) < 2:
     sys.exit("Too few command line arguments. Expecting 2 (including file name)")
@@ -15,12 +17,29 @@ def main():
  
     if ext not in ACCEPTABLE_FILE_TYPE:
         sys.exit("Invalid file type. Only 'jpg', 'jpeg', and 'png' are acceptable")
+    
+    generate_img(ext)
 
-    return print("Hello Re:Img")
+
+def generate_img(ext):
+    try:
+        test_file = open(sys.argv[1])
+        test_file.close()
+    except FileNotFoundError:
+        sys.exit("File not found. Please check your file")
+    else:
+        shirt = Image.open('./asset/shirt.png')
+        original = Image.open(sys.argv[1])
+
+        size = shirt.size
+
+        output = ImageOps.fit(original, size, method=Image.BICUBIC, bleed=0.0, centering=(0.5, 0.5))
+
+        output.paste(shirt, box=None, mask=shirt)
+
+        output.save(f'out_{randint(0, 100)}{ext}')
 
 
-def generate_img():
-    pass
 
 if __name__ == "__main__":
     main()
